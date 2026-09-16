@@ -15,14 +15,15 @@ public class JjaonePart1 {
         Scanner scanner = new Scanner(System.in);
         Login login = new Login();
 
-        // 1. Get Name
+        //Ask user to enter first Name
         System.out.print("Please enter your first name: ");
         login.setFirstName(scanner.next());
 
+        //Ask user to enter last name
         System.out.print("Please enter your last name: ");
         login.setLastName(scanner.next());
 
-        // 2. Get Username Loop
+        //Get the username and keep asking if it's wrongly formatted
         System.out.print("Please enter your username: ");
         login.setUserName(scanner.next());
 
@@ -35,7 +36,7 @@ public class JjaonePart1 {
         }
         System.out.println("Username successfully captured.");
 
-        // 3. Get Password Loop
+        //Get the password and keep asking if it's wrongly formatted
         System.out.print("Please enter your password: ");
         login.setPassword(scanner.next());
 
@@ -48,7 +49,7 @@ public class JjaonePart1 {
         }
         System.out.println("Password successfully captured.");
 
-        // 4. Get Cell Number Loop
+        //Get the cell phone number and keep asking if it's wrong
         System.out.print("Please enter your cell number: ");
         login.setCellNumber(scanner.next());
 
@@ -75,6 +76,7 @@ public class JjaonePart1 {
         boolean loggedIn = login.loginUser(enteredUser, enteredPass);
         System.out.println(login.returnLoginStatus(loggedIn));
 
+        //Keep asking for login details if they were incorrect
         while (!loggedIn) {
             System.out.print("Enter your username: ");
             enteredUser = scanner.next();
