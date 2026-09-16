@@ -1,0 +1,92 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.jjaonepart1;
+import java.util.Scanner;
+/**
+ *
+ * @author Student
+ */
+
+public class JjaonePart1 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Login login = new Login();
+
+        // 1. Get Name
+        System.out.print("Please enter your first name: ");
+        login.setFirstName(scanner.next());
+
+        System.out.print("Please enter your last name: ");
+        login.setLastName(scanner.next());
+
+        // 2. Get Username Loop
+        System.out.print("Please enter your username: ");
+        login.setUserName(scanner.next());
+
+        while (!login.checkUserName()) {
+            System.out.println("Username is not correctly formatted; please"
+                    + " ensure thet your username contains an under"
+                    + "underscore and is no more than five characters in length");
+            System.out.print("Please enter your username: ");
+            login.setUserName(scanner.next());
+        }
+        System.out.println("Username successfully captured.");
+
+        // 3. Get Password Loop
+        System.out.print("Please enter your password: ");
+        login.setPassword(scanner.next());
+
+        while (!login.checkPasswordComplexity()) {
+            System.out.println("Password is not correctly formatted; please ensure that"
+                    + "the password contains at least eight characters, a capital letter, "
+                    + "a number, and a special character.");
+            System.out.print("Please enter your password: ");
+            login.setPassword(scanner.next());
+        }
+        System.out.println("Password successfully captured.");
+
+        // 4. Get Cell Number Loop
+        System.out.print("Please enter your cell number: ");
+        login.setCellNumber(scanner.next());
+
+        while (!login.checkCellPhoneNumber()) {
+            System.out.println("Cell phone number is incorrectly formatted or does not contain"
+                    + "international code.");
+            System.out.print("Please enter your cell number: ");
+            login.setCellNumber(scanner.next());
+        }
+        System.out.println("Cell phone number successfully added.");
+
+        // Show registration result
+        System.out.println(login.registerUser());
+
+        // 5. Login Section Loop
+        System.out.println("\n--- Login ---");
+
+        System.out.print("Enter your username: ");
+        String enteredUser = scanner.next();
+
+        System.out.print("Enter your password: ");
+        String enteredPass = scanner.next();
+
+        boolean loggedIn = login.loginUser(enteredUser, enteredPass);
+        System.out.println(login.returnLoginStatus(loggedIn));
+
+        while (!loggedIn) {
+            System.out.print("Enter your username: ");
+            enteredUser = scanner.next();
+
+            System.out.print("Enter your password: ");
+            enteredPass = scanner.next();
+
+            loggedIn = login.loginUser(enteredUser, enteredPass);
+            System.out.println(login.returnLoginStatus(loggedIn));
+        }
+
+    }
+}
+
+        
