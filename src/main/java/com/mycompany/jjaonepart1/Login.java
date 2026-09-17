@@ -57,13 +57,13 @@ class Login {
     //Checks all details and returns an error message if any fail or a success message if all are valid.
     public String registerUser() {
         if (!checkUserName()) {
-            return "Username is not correctly formatted.";
+            return "Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.";
         }
         if (!checkPasswordComplexity()) {
-            return "Password is not correctly formatted.";
+            return "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
         }
         if (!checkCellPhoneNumber()) {
-            return "Cell phone number is incorrectly formatted.";
+            return "Cell phone number is incorrectly formatted or does not contain an international code; please correct the number and try again.";
         }
         return "User registered successfully.";
     }
@@ -78,10 +78,9 @@ class Login {
     //Returns a welcome message if logged in, or an error message if failed.
     public String returnLoginStatus(boolean isLogged) {
         if (isLogged) {
-            return "Welcome " + firstName + " " + lastName + " it is great to see you again.";
+            return "Welcome " + firstName + " " + lastName + " it is great to see you.";
         }
         return "Username or password incorrect, please try again.";
     }
 }
-
     
