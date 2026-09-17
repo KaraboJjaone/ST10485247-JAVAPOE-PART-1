@@ -23,7 +23,7 @@ public class JjaonePart1 {
         System.out.print("Please enter your last name: ");
         login.setLastName(scanner.next());
 
-        //Get the username and keep asking if it's wrongly formatted
+        //Ask the user to enter username and keep asking if it's wrongly formatted
         System.out.print("Please enter your username: ");
         login.setUserName(scanner.next());
 
@@ -36,7 +36,7 @@ public class JjaonePart1 {
         }
         System.out.println("Username successfully captured.");
 
-        //Get the password and keep asking if it's wrongly formatted
+        //Ask the user to enter password and keep asking if it's wrongly formatted
         System.out.print("Please enter your password: ");
         login.setPassword(scanner.next());
 
@@ -49,7 +49,7 @@ public class JjaonePart1 {
         }
         System.out.println("Password successfully captured.");
 
-        //Get the cell phone number and keep asking if it's wrong
+        //Ask the user to enter cell phone and keep asking if it's wrong
         System.out.print("Please enter your cell number: ");
         login.setCellNumber(scanner.next());
 
@@ -64,7 +64,7 @@ public class JjaonePart1 {
         // Show registration result
         System.out.println(login.registerUser());
 
-        // 5. Login Section Loop
+        //Login Section Loop
         System.out.println("\n--- Login ---");
 
         System.out.print("Enter your username: ");
