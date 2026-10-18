@@ -87,7 +87,8 @@ public class JjaonePart1 {
             loggedIn = login.loginUser(enteredUser, enteredPass);
             System.out.println(login.returnLoginStatus(loggedIn));
         }
-
+        // Start Part 2 only after successful login
+            QuickChat.startQuickChat(myInput);
     }
 }
 
