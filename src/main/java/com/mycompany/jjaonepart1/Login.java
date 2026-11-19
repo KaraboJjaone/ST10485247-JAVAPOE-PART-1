@@ -21,7 +21,8 @@ class Login {
     public void setUserName(String name) { userName = name; }
     public void setPassword(String word) { password = word; }
     public void setCellNumber(String number) { cellNumber = number; }
-
+    public String getCellNumber() { return cellNumber; }
+    
     //Check Username
     //Returns true if username has an underscore (_) and is 5 or fewer characters.
     public boolean checkUserName() {

@@ -1,9 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.jjaonepart1;
+
 import java.util.Scanner;
+
 /**
  *
  * @author Student
@@ -88,8 +89,7 @@ public class JjaonePart1 {
             System.out.println(login.returnLoginStatus(loggedIn));
         }
         // Start Part 2 only after successful login
-            QuickChat.startQuickChat(myInput);
+        Message.setSender(login.getCellNumber());
+        QuickChat.startQuickChat(myInput);
     }
 }
-
-        

@@ -29,6 +29,8 @@ public class Message {
 
     // The name of the file where stored messages are saved.
     private static final String JSON_FILE = "stored_messages.json";
+    // The sender shown when stored messages are displayed.
+    private static String sender = "You";
 
     // Lists that store messages according to their status.
     private static ArrayList<Message> sentMessages = new ArrayList<>();
@@ -97,34 +99,34 @@ public class Message {
     }
 
     // Creates the message hash using the ID, number, first word and last word.
-public String createMessageHash() {
-    String firstWord = "";
-    String lastWord = "";
-    String trimmedMessage = message.trim();
+    public String createMessageHash() {
+        String firstWord = "";
+        String lastWord = "";
+        String trimmedMessage = message.trim();
 
-    // Only split the message into words when it is not empty.
-    if (!trimmedMessage.isEmpty()) {
-        String[] words = trimmedMessage.split("\\s+");
+        // Only split the message into words when it is not empty.
+        if (!trimmedMessage.isEmpty()) {
+            String[] words = trimmedMessage.split("\\s+");
 
-        // Remove punctuation from the first and last words.
-        firstWord = words[0].replaceAll("[^a-zA-Z0-9]", "");
-        lastWord = words[words.length - 1]
-                .replaceAll("[^a-zA-Z0-9]", "");
+            // Remove punctuation from the first and last words.
+            firstWord = words[0].replaceAll("[^a-zA-Z0-9]", "");
+            lastWord = words[words.length - 1]
+                    .replaceAll("[^a-zA-Z0-9]", "");
+        }
+
+        String firstTwoCharacters = "";
+
+        // Make sure the ID has at least two characters before using substring.
+        if (messageID.length() >= 2) {
+            firstTwoCharacters = messageID.substring(0, 2);
+        }
+
+        // Build the hash and return it in capital letters.
+        // The field is no longer changed here, so calling this method is safe.
+        return (firstTwoCharacters
+                + ":" + messageNumber
+                + ":" + firstWord + lastWord).toUpperCase();
     }
-
-    String firstTwoCharacters = "";
-
-    // Make sure the ID has at least two characters before using substring.
-    if (messageID.length() >= 2) {
-        firstTwoCharacters = messageID.substring(0, 2);
-    }
-
-    // Build the hash and return it in capital letters.
-    // The field is no longer changed here, so calling this method is safe.
-    return (firstTwoCharacters
-            + ":" + messageNumber
-            + ":" + firstWord + lastWord).toUpperCase();
-}
 
     // Lets the user decide whether to send, disregard or store a message.
     public String sendMessage(Scanner input) {
@@ -206,7 +208,10 @@ public String createMessageHash() {
         }
     }
 
-    // Reads stored messages from the JSON file when the program starts.
+    // JSON reading adapted from Fadatare, R. (2019) JSON.simple Tutorial - Read
+    // and Write JSON in Java. Available at:
+    // https://www.javaguides.net/2019/07/jsonsimple-tutorial-read-and-write-json-in-java.html
+    // (Accessed: 17 November 2026).
     public static boolean loadStoredMessagesFromJson() {
         File file = new File(JSON_FILE);
 
@@ -258,6 +263,10 @@ public String createMessageHash() {
             return false;
         }
     }
+    // Sets the sender shown in the stored messages display.
+    public static void setSender(String senderNumber) {
+        sender = senderNumber;
+    }
 
     // Displays the sender and recipient for each stored message.
     public static String displayStoredMessageContacts() {
@@ -268,7 +277,7 @@ public String createMessageHash() {
         StringBuilder output = new StringBuilder();
 
         for (Message currentMessage : storedMessages) {
-            output.append("Sender: You\n");
+            output.append("Sender: ").append(sender).append("\n");
             output.append("Recipient: ")
                     .append(currentMessage.recipient)
                     .append("\n\n");
@@ -413,58 +422,30 @@ public String createMessageHash() {
         return report.toString();
     }
     // Creates a report containing the details of all sent messages.
-public static String createSentMessageReport() {
-    if (sentMessages.isEmpty()) {
-        return "No sent messages found.";
-    }
 
-    StringBuilder report = new StringBuilder();
-    report.append("----- SENT MESSAGE REPORT -----\n");
-
-    for (Message currentMessage : sentMessages) {
-        report.append("Message Hash: ")
-                .append(currentMessage.messageHash)
-                .append("\n");
-
-        report.append("Recipient: ")
-                .append(currentMessage.recipient)
-                .append("\n");
-
-        report.append("Message: ")
-                .append(currentMessage.message)
-                .append("\n\n");
-    }
-
-    return report.toString();
-}
-
-    // Creates text containing details of all sent messages.
-    public static String printMessages() {
+    public static String createSentMessageReport() {
         if (sentMessages.isEmpty()) {
             return "No sent messages found.";
         }
 
-        StringBuilder output = new StringBuilder();
+        StringBuilder report = new StringBuilder();
+        report.append("----- SENT MESSAGE REPORT -----\n");
 
         for (Message currentMessage : sentMessages) {
-            output.append("Message ID: ")
-                    .append(currentMessage.messageID)
-                    .append("\n");
-
-            output.append("Message Hash: ")
+            report.append("Message Hash: ")
                     .append(currentMessage.messageHash)
                     .append("\n");
 
-            output.append("Recipient: ")
+            report.append("Recipient: ")
                     .append(currentMessage.recipient)
                     .append("\n");
 
-            output.append("Message: ")
+            report.append("Message: ")
                     .append(currentMessage.message)
                     .append("\n\n");
         }
 
-        return output.toString();
+        return report.toString();
     }
 
     // Returns the number of messages which were sent.
@@ -492,6 +473,7 @@ public static String createSentMessageReport() {
     public static ArrayList<String> getMessageIDs() {
         return new ArrayList<>(messageIDs);
     }
+
     // Clears the lists before each JUnit test starts.
     public static void clearAllMessages() {
         sentMessages.clear();
