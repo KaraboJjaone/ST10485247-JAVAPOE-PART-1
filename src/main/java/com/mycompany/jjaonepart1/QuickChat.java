@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.jjaonepart1;
+
 import java.util.Scanner;
+
 /**
  *
  * @author Student
@@ -20,12 +22,22 @@ public class QuickChat {
 
         System.out.println("Welcome to QuickChat.");
 
-        // Ask the user how many new messages they want to enter.
-        System.out.print("How many messages would you like to enter? ");
-        int numberOfMessages = input.nextInt();
+        // Safely ask the user how many new messages they want to enter.
+        int numberOfMessages = 0;
+        while (true) {
+            System.out.print("How many messages would you like to enter? ");
+            String countInput = input.nextLine().trim();
 
-        // Clears the Enter key after nextInt().
-        input.nextLine();
+            try {
+                numberOfMessages = Integer.parseInt(countInput);
+                if (numberOfMessages >= 0) {
+                    break;
+                }
+                System.out.println("Please enter zero or a positive number.");
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number. Please enter a whole number.");
+            }
+        }
 
         boolean running = true;
 
@@ -50,9 +62,9 @@ public class QuickChat {
                     break;
 
                 case "2":
-                     // Displays a report of all sent messages.
-                     System.out.println(Message.createSentMessageReport());
-                     break;
+                    // Displays a report of all sent messages.
+                    System.out.println(Message.createSentMessageReport());
+                    break;
 
                 case "3":
                     // Ends the main-menu loop.

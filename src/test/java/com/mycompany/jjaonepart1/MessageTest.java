@@ -4,7 +4,9 @@
  */
 package com.mycompany.jjaonepart1;
 
+import java.io.File;
 import java.util.Scanner;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,16 +17,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class MessageTest {
 
+    private static final String TEST_JSON_PATH = "target/test-stored-messages.json";
+
     private Message message1;
     private Message message2;
     private Message message3;
     private Message message4;
     private Message message5;
 
-    // Runs before every test so that each test starts with empty lists.
+    // Runs before every test so each test starts cleanly with empty lists and a test JSON file.
     @BeforeEach
     public void setUp() {
+        Message.setJsonFilePath(TEST_JSON_PATH);
         Message.clearAllMessages();
+        Message.setSender("+27838968976");
 
         // Test Message 1: Sent.
         message1 = new Message(
@@ -70,6 +76,15 @@ public class MessageTest {
                 "Ok, I am leaving without you."
         );
         message5.sendMessage(new Scanner("3\n"));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        File testFile = new File(TEST_JSON_PATH);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+        Message.resetJsonFilePath();
     }
 
     // Creates text with the selected number of characters.
@@ -212,7 +227,7 @@ public class MessageTest {
         );
     }
 
-    // Part 3: tests that sent-message array contains messages 1 and 4.
+    // Part 3: tests that sent-message list contains messages 1 and 4.
     @Test
     public void testSentMessagesArray() {
         assertEquals(2, Message.getSentMessages().size());
@@ -224,6 +239,32 @@ public class MessageTest {
                 "It is dinner time!",
                 Message.getSentMessages().get(1).getMessage()
         );
+    }
+
+    // Part 3: tests disregarded and stored lists + IDs and hashes tracking.
+    @Test
+    public void testDisregardedStoredAndTrackingLists() {
+        assertEquals(1, Message.getDiscardedMessages().size());
+        assertEquals(
+                "Yohoooo, I am at your gate.",
+                Message.getDiscardedMessages().get(0).getMessage()
+        );
+
+        assertEquals(2, Message.getStoredMessages().size());
+        assertTrue(Message.getMessageIDs().contains("2222222222"));
+        assertTrue(Message.getMessageHashes().contains(message2.getMessageHash()));
+    }
+
+    // Part 3: tests stored message contacts display (submenu option 1).
+    @Test
+    public void testDisplayStoredMessageContacts() {
+        String expected =
+                "Sender: +27838968976\n"
+                + "Recipient: +27838884567\n\n"
+                + "Sender: +27838968976\n"
+                + "Recipient: +27838884567\n\n";
+
+        assertEquals(expected, Message.displayStoredMessageContacts());
     }
 
     // Part 3: tests that the longest stored message is message 2.
@@ -264,9 +305,10 @@ public class MessageTest {
         );
 
         assertEquals(1, Message.getStoredMessages().size());
+        assertFalse(Message.getMessageHashes().contains(message2.getMessageHash()));
     }
 
-        // Part 3: tests the sent-messages report (messages 1 and 4).
+    // Part 3: tests the sent-messages report (messages 1 and 4).
     @Test
     public void testSentMessageReport() {
         String expected =

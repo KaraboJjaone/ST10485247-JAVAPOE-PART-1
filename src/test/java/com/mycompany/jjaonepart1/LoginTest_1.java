@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-
 package com.mycompany.jjaonepart1;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginTest_1 {
 
-    Login login = new Login();
+    private Login login;
+
+    @BeforeEach
+    public void setUp() {
+        login = new Login();
+    }
 
     // ==========================================
     // 1. BOOLEAN TESTS (assertTrue / assertFalse)

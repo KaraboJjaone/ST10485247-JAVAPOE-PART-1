@@ -27,8 +27,10 @@ public class Message {
     private String messageHash;
     private String messageStatus;
 
-    // The name of the file where stored messages are saved.
-    private static final String JSON_FILE = "stored_messages.json";
+    // Default and active JSON file path where stored messages are saved.
+    private static final String DEFAULT_JSON_FILE = "stored_messages.json";
+    private static String jsonFilePath = DEFAULT_JSON_FILE;
+
     // The sender shown when stored messages are displayed.
     private static String sender = "You";
 
@@ -55,6 +57,18 @@ public class Message {
 
         // The message has no status until the user chooses an option.
         this.messageStatus = "";
+    }
+
+    // Allows tests to use a separate JSON file so real stored_messages.json is untouched.
+    public static void setJsonFilePath(String path) {
+        if (path != null && !path.trim().isEmpty()) {
+            jsonFilePath = path.trim();
+        }
+    }
+
+    // Resets the JSON file path back to the default stored_messages.json.
+    public static void resetJsonFilePath() {
+        jsonFilePath = DEFAULT_JSON_FILE;
     }
 
     // Creates a random 10-digit message ID.
@@ -122,7 +136,6 @@ public class Message {
         }
 
         // Build the hash and return it in capital letters.
-        // The field is no longer changed here, so calling this method is safe.
         return (firstTwoCharacters
                 + ":" + messageNumber
                 + ":" + firstWord + lastWord).toUpperCase();
@@ -182,7 +195,7 @@ public class Message {
         }
     }
 
-    // Writes all stored messages into stored_messages.json.
+    // Writes all stored messages into the active JSON file.
     @SuppressWarnings("unchecked")
     private static void storeMessage() throws IOException {
         JSONArray messagesJson = new JSONArray();
@@ -203,7 +216,7 @@ public class Message {
         }
 
         // Create or overwrite the JSON file.
-        try (FileWriter file = new FileWriter(JSON_FILE)) {
+        try (FileWriter file = new FileWriter(jsonFilePath)) {
             file.write(messagesJson.toJSONString());
         }
     }
@@ -213,7 +226,7 @@ public class Message {
     // https://www.javaguides.net/2019/07/jsonsimple-tutorial-read-and-write-json-in-java.html
     // (Accessed: 17 November 2026).
     public static boolean loadStoredMessagesFromJson() {
-        File file = new File(JSON_FILE);
+        File file = new File(jsonFilePath);
 
         // If no JSON file exists yet, there are simply no stored messages.
         if (!file.exists()) {
@@ -263,6 +276,7 @@ public class Message {
             return false;
         }
     }
+
     // Sets the sender shown in the stored messages display.
     public static void setSender(String senderNumber) {
         sender = senderNumber;
@@ -421,8 +435,8 @@ public class Message {
 
         return report.toString();
     }
-    // Creates a report containing the details of all sent messages.
 
+    // Creates a report containing the details of all sent messages.
     public static String createSentMessageReport() {
         if (sentMessages.isEmpty()) {
             return "No sent messages found.";
